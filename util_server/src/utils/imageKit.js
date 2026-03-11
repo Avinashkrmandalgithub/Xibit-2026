@@ -36,6 +36,7 @@ const deleteFromImageKit = async (fileId) => {
                 if (error) {
                     console.error('ImageKit Delete Error:', error);
                     return reject(error);
+                    
                 }
                 console.log('Successfully deleted from ImageKit');
                 resolve(result);
