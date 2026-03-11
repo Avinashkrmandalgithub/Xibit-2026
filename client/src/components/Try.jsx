@@ -84,10 +84,6 @@ function Try() {
 
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
-    socket.emit("query", {
-      apiKey: apiKey,
-      query: e.target.value,
-    });
     e.target.style.height = "44px";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 140)}px`;
   };
@@ -98,6 +94,13 @@ function Try() {
     setApiKey(trimmed);
     setShowApiModal(false);
   };
+
+  const submitData = () => {
+    socket.emit("query", {
+      apiKey: apiKey,
+      query: input,
+    });
+  }
 
   const rightContent = (
     <div className="flex items-center gap-2">
@@ -217,7 +220,9 @@ function Try() {
                 style={{ minHeight: "44px", maxHeight: "140px" }}
               />
               <button
-                onClick={() => addUserMessage(input)}
+                onClick={() => {
+                  submitData()
+                }}
                 disabled={!input.trim() || isThinking || showApiModal}
                 className="absolute bottom-2.5 right-2.5 flex h-9 w-9 items-center justify-center rounded-xl bg-[#F97316] text-white shadow-sm transition-all hover:bg-[#ea670f] disabled:bg-slate-200 disabled:text-slate-400"
               >
