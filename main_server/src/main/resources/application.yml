@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: main_server
+
+  mongodb:
+    uri: ${MONGODB_URL}
+    auto-index-creation: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+jwt:
+  secretKey: ${JWT_SECRET}
+
+url:
+  upload:
+    utilServerUrl: ${UTIL_SERVER_URL}
+    ragServerUrl: ${RAG_SERVER_URL}
+    clientUrl: ${CLIENT_URL}
