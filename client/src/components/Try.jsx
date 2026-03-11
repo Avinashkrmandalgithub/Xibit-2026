@@ -95,220 +95,174 @@ function Try() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] text-slate-800 font-sans">
+    <div className="min-h-screen bg-[#F3F4F6] text-slate-900">
       <div className={showApiModal ? 'pointer-events-none select-none blur-[2px]' : ''}>
-        <nav className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <Link to="/" className="flex-shrink-0 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-sm border border-indigo-500 overflow-hidden bg-white">
-                  <img src="https://www.logodesign.net/logo-new/arrows-inside-globe-with-airplane-507ld.png?nwm=1&nws=1&industry=All&txt_keyword=" alt="Logo" className="w-full h-full object-cover" />
-                </div>
-                <span className="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-                  Rag Flow
-                </span>
-              </Link>
+        <nav className="border-b border-slate-200 bg-white">
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-[#8FA6F8]/30 bg-white shadow-sm">
+                <img
+                  src="https://www.logodesign.net/logo-new/arrows-inside-globe-with-airplane-507ld.png?nwm=1&nws=1&industry=All&txt_keyword="
+                  alt="Logo"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <span className="bg-gradient-to-r from-[#8FA6F8] to-[#D16BA5] bg-clip-text text-2xl font-bold tracking-tight text-transparent">
+                Rag Flow
+              </span>
+            </Link>
 
-              <div className="flex items-center gap-3">
-                <div className="hidden md:flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                  </svg>
-                  {maskApiKey(apiKey)}
-                </div>
+            <div className="hidden items-center gap-3 sm:flex">
+              <div className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600">
+                {maskApiKey(apiKey)}
+              </div>
+              <div className="rounded-full border border-[#22C55E]/20 bg-[#22C55E]/10 px-3 py-1.5 text-sm font-medium text-slate-700">
+                3 documents loaded
               </div>
             </div>
           </div>
         </nav>
 
-        <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 md:py-8">
-          <div className="mb-6 max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              Live conversation workspace
-            </div>
-            <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        <main className="mx-auto flex min-h-[calc(100vh-64px)] max-w-4xl flex-col px-4 pb-8 pt-8 sm:px-6 lg:px-8">
+          <section className="mb-8">
+            <p className="text-sm font-medium text-slate-500">Document assistant</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
               Ask anything about your documents
             </h1>
-            <p className="mt-3 max-w-xl text-base leading-7 text-slate-500 sm:text-lg">
-              A focused chat workspace for retrieval-based answers, summaries, and follow-up questions.
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              A clean workspace for retrieval-based answers, summaries, and follow-up questions.
             </p>
-          </div>
+          </section>
 
-          <div className="grid grid-cols-1 gap-6 items-start">
-            <section className="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_60px_-30px_rgba(15,23,42,0.22)]">
-              <div className="border-b border-slate-200 bg-white px-5 py-4 sm:px-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <p className="text-sm font-medium uppercase tracking-[0.18em] text-slate-400">Current chat</p>
-                    <h2 className="mt-1 text-2xl font-semibold text-slate-900">Document assistant</h2>
-                  </div>
-                  <div className="flex flex-wrap gap-3 text-sm">
-                    <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-slate-600">
-                      3 documents loaded
-                    </div>
-                    <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-slate-600">
-                      Source-grounded answers
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-b border-slate-100 px-5 pb-4 pt-5 sm:px-6">
-                <div className="flex flex-wrap gap-3">
-                  {starterPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      onClick={() => addUserMessage(prompt)}
-                      className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-100"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-5 bg-[#f8f8f8] px-5 py-6 sm:px-6 min-h-[420px]">
-                {messages.map((message) => (
+          <section className="flex-1">
+            <div className="space-y-6">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
                   <div
-                    key={message.id}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`w-full max-w-3xl rounded-3xl px-5 py-4 ${
+                      message.role === 'user'
+                        ? 'bg-white border border-slate-200 text-slate-900 shadow-sm'
+                        : 'bg-[#8FA6F8]/10 border border-[#8FA6F8]/15 text-slate-900'
+                    }`}
                   >
-                    <div
-                      className={`max-w-2xl rounded-[28px] px-5 py-4 shadow-sm ${
-                        message.role === 'user'
-                          ? 'bg-[#2f2f2f] text-white'
-                          : 'border border-slate-200 bg-white text-slate-800'
-                      }`}
-                    >
-                      <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.18em]">
-                        <span className={message.role === 'user' ? 'text-slate-300' : 'text-slate-400'}>
-                          {message.role === 'user' ? 'You' : 'Assistant'}
-                        </span>
-                        <span className={message.role === 'user' ? 'text-slate-500' : 'text-slate-300'}>|</span>
-                        <span className={message.role === 'user' ? 'text-slate-300' : 'text-slate-400'}>
-                          {message.time}
-                        </span>
-                      </div>
-                      <p className={`leading-7 ${message.role === 'user' ? 'text-slate-100' : 'text-slate-700'}`}>
-                        {message.text}
-                      </p>
+                    <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
+                      <span>{message.role === 'user' ? 'You' : 'Assistant'}</span>
+                      <span className="text-slate-300">|</span>
+                      <span>{message.time}</span>
                     </div>
+                    <p className="text-[15px] leading-7 text-slate-700">{message.text}</p>
                   </div>
-                ))}
+                </div>
+              ))}
 
-                {isThinking && (
-                  <div className="flex justify-start">
-                    <div className="rounded-[28px] border border-slate-200 bg-white px-5 py-4 shadow-sm">
-                      <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-slate-400">
-                        <span>Assistant</span>
-                        <span>|</span>
-                        <span>Thinking</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-bounce"></span>
-                        <span className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-bounce [animation-delay:150ms]"></span>
-                        <span className="w-2.5 h-2.5 rounded-full bg-slate-400 animate-bounce [animation-delay:300ms]"></span>
-                      </div>
+              {isThinking && (
+                <div className="flex justify-start">
+                  <div className="w-full max-w-3xl rounded-3xl border border-[#8FA6F8]/15 bg-[#8FA6F8]/10 px-5 py-4">
+                    <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
+                      <span>Assistant</span>
+                      <span className="text-slate-300">|</span>
+                      <span>Thinking</span>
                     </div>
+                    <p className="text-[15px] text-slate-500">Thinking...</p>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
+          </section>
 
-              <div className="border-t border-slate-200 bg-white p-4 sm:p-5">
-                <form onSubmit={handleSubmit} className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-[0_10px_30px_-20px_rgba(15,23,42,0.35)]">
-                  <div className="flex flex-col gap-3">
-                    <textarea
-                      value={input}
-                      onChange={(event) => setInput(event.target.value)}
-                      rows={3}
-                      placeholder="Ask a question about your uploaded documents..."
-                      className="w-full resize-none bg-transparent px-2 py-2 text-[15px] leading-7 text-slate-700 placeholder:text-slate-400 focus:outline-none"
+          <section className="mt-8">
+            <div className="mb-4 flex flex-wrap gap-3">
+              {starterPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => addUserMessage(prompt)}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 transition-colors hover:border-[#8FA6F8]/30 hover:bg-[#8FA6F8]/5"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-sm"
+            >
+              <div className="relative">
+                <textarea
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  placeholder="Message Rag Flow"
+                  className="h-12 w-full resize-none bg-transparent px-2 py-3 pr-28 text-[15px] leading-6 text-slate-700 placeholder:text-slate-400 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isThinking || showApiModal}
+                  className="absolute bottom-1.5 right-1.5 inline-flex items-center gap-2 rounded-xl bg-[#F97316] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#ea670f] disabled:cursor-not-allowed disabled:bg-slate-300"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 12h14M12 5l7 7-7 7"
                     />
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm text-slate-500">
-                        Message your knowledge base
-                      </p>
-                      <button
-                        type="submit"
-                        disabled={!input.trim() || isThinking || showApiModal}
-                        className="inline-flex items-center gap-2 rounded-2xl bg-[#2f2f2f] px-5 py-3 font-medium text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:bg-slate-300"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Send
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                  </svg>
+                  Send
+                </button>
               </div>
-            </section>
-          </div>
+
+              <p className="px-2 pt-2 text-sm text-slate-500">
+                Answers stay grounded in uploaded files.
+              </p>
+            </form>
+          </section>
         </main>
       </div>
 
       {showApiModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <div className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"></div>
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
 
-          <div className="relative w-full max-w-xl overflow-hidden rounded-[28px] bg-white shadow-[0_30px_80px_-28px_rgba(15,23,42,0.45)] ring-1 ring-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 sm:px-7">
-              <h2 className="flex items-center gap-3 text-2xl font-bold text-slate-900">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                  </svg>
-                </span>
-                Enter API Key
+          <div className="relative w-full max-w-lg overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_30px_80px_-28px_rgba(15,23,42,0.32)]">
+            <div className="border-b border-slate-100 px-6 py-5">
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+                Enter API key
               </h2>
-              <button
-                type="button"
-                onClick={submitApiKey}
-                disabled={!apiKeyInput.trim()}
-                className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
-                aria-label="Close"
-              >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Paste your API key to unlock the conversation workspace.
+              </p>
             </div>
 
             <form onSubmit={handleApiKeySubmit}>
-              <div className="px-6 py-7 sm:px-7">
-                <p className="max-w-lg text-lg leading-8 text-slate-600">
-                  Paste your API key to unlock the conversation workspace. The chat screen will appear right after submission.
-                </p>
-
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <div className="px-6 py-6">
+                <div className="flex flex-col gap-3">
                   <input
                     type="password"
                     value={apiKeyInput}
                     onChange={(event) => setApiKeyInput(event.target.value)}
                     placeholder="sk-rag-..."
                     autoFocus
-                    className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3.5 font-mono text-slate-800 shadow-sm outline-none transition focus:border-slate-400 focus:ring-4 focus:ring-slate-200"
+                    className="w-full rounded-2xl border border-slate-200 bg-[#F3F4F6] px-4 py-3.5 font-mono text-slate-800 outline-none transition focus:border-[#8FA6F8] focus:ring-4 focus:ring-[#8FA6F8]/15"
                   />
                   <button
                     type="submit"
                     disabled={!apiKeyInput.trim()}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#2f2f2f] px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-black disabled:cursor-not-allowed disabled:bg-slate-300"
+                    className="rounded-2xl bg-[#F97316] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#ea670f] disabled:cursor-not-allowed disabled:bg-slate-300"
                   >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                    Submit
+                    Continue
                   </button>
                 </div>
               </div>
 
-              <div className="flex justify-end border-t border-slate-100 bg-slate-50 px-6 py-5 sm:px-7">
+              <div className="flex justify-end border-t border-slate-100 bg-slate-50 px-6 py-4">
                 <button
                   type="submit"
                   disabled={!apiKeyInput.trim()}
-                  className="rounded-2xl border border-slate-300 bg-white px-6 py-3 font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Done
                 </button>
