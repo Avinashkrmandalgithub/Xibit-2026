@@ -9,6 +9,15 @@ export function registerSocketEvents(socket) {
     `[+] Client connected | ID: ${socket.id} | Total: ${connectedClients}`,
   );
 
+  console.log(process.env.MAIN_SERVER_URL)
+
+  const userId = socket.data.userId;
+
+  socket.on("join", (userId) => {
+    socket.join(userId);
+    console.log(`Client ${socket.id} joined room: ${userId}`);
+  });
+
   socket.on("query", async (data) => {
     console.log(`[→] Query received from ${socket.id}`);
 
@@ -21,45 +30,29 @@ export function registerSocketEvents(socket) {
     }
 
     const { apiKey, query } = data;
-    socket.emit("status", { message: "Processing..." });
+    console.log({ apiKey, query });
 
     try {
-      const response = await axios.post(`${MAIN_SERVER_URL}/api/query`, {
-        apiKey,
-        query,
-      });
+      const response = await axios.post(
+        `${process.env.MAIN_SERVER_URL}`,
+        { apiKey, query }
+      );
+
+      console.log("API response:", response.data);
 
       socket.emit("response", {
         success: true,
-        answer: response.response,
-        query: query,
+        answer: response.data.response,
+        query,
       });
 
-      console.log(`[✓] Response sent to ${socket.id}`);
     } catch (error) {
-      console.error(`[✗] Error for ${socket.id}:`, error.message);
+      console.error("Axios error:", error.response?.data || error.message);
 
-      if (error.response?.status === 401) {
-        socket.emit("error", {
-          success: false,
-          message: "Invalid API Key",
-        });
-      } else if (error.response?.status === 429) {
-        socket.emit("error", {
-          success: false,
-          message: "Rate limit exceed ho gaya, thoda wait karo",
-        });
-      } else if (error.code === "ECONNABORTED") {
-        socket.emit("error", {
-          success: false,
-          message: "Request timeout ho gayi",
-        });
-      } else {
-        socket.emit("error", {
-          success: false,
-          message: error.response?.data?.message || "Server error aaya",
-        });
-      }
+      socket.emit("error", {
+        success: false,
+        message: error.response?.data?.message || "Server error",
+      });
     }
   });
 

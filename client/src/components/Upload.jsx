@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react';
 import Navbar from './Navbar';
+import axios from 'axios';
 
 const Upload = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [apiKey] = useState('sk-rag-f9a8d7e6c5b4a3c2d1e0f9a8d7e6c5b4');
+  const [apiKey, setApiKey] = useState('');
   const [copied, setCopied] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [formData, setFormData] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleCopy = () => {
@@ -35,6 +38,10 @@ const Upload = () => {
       size: file.size,
       status: 'uploading',
     }));
+    const fd = new FormData();
+    fd.append('file', files[0]);
+    setFormData(fd);
+    console.log('FormData entries:', [...fd.entries()]);
     setUploadedFiles((prev) => [...prev, ...newFiles]);
 
     newFiles.forEach((f) => {
@@ -56,9 +63,45 @@ const Upload = () => {
     setUploadedFiles((prev) => prev.filter((f) => f.id !== id));
   };
 
+  const handleUpload = async () => {
+    if (!formData) return;
+    setIsUploading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`${import.meta.env.VITE_MAIN_SERVER_URL}/uploadData/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Upload response:', response.data);
+    } catch (error) {
+      console.error('Upload error:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const fetchApiKey = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${import.meta.env.VITE_MAIN_SERVER_URL}/auth/api-key`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setApiKey(response.data.apiKey);
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+    }
+  }
+
   const rightContent = (
     <button
-      onClick={() => setIsModalOpen(true)}
+      onClick={() => {
+        fetchApiKey();
+        setIsModalOpen(true)
+      }}
       className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#8FA6F8] to-[#D16BA5] px-5 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 hover:from-[#7d96f3] hover:to-[#c45a98] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#8FA6F8] focus:ring-offset-2"
     >
       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,8 +214,8 @@ const Upload = () => {
 
             {/* Confirm Button */}
             {uploadedFiles.every((f) => f.status === 'done') && (
-              <button className="mt-2 w-full rounded-2xl bg-gradient-to-r from-[#8FA6F8] to-[#D16BA5] py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-[#7d96f3] hover:to-[#c45a98] hover:shadow-lg">
-                Add to Knowledge Base →
+              <button onClick={handleUpload} disabled={isUploading} className="mt-2 w-full rounded-2xl bg-gradient-to-r from-[#8FA6F8] to-[#D16BA5] py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-[#7d96f3] hover:to-[#c45a98] hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed">
+                {isUploading ? 'Loading...' : 'Add to Knowledge Base →'}
               </button>
             )}
           </div>

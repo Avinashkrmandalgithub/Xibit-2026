@@ -1,13 +1,48 @@
 import React from 'react';
 import Navbar from './Navbar';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const Home = () => {
+  const [isLogin, setIsLogin] = useState(true);
   const handleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    window.location.href = import.meta.env.VITE_GOOGLE_URL;
   };
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function checkFeedbackRedirect() {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      if (token) {
+        localStorage.setItem("token", token);
+
+        window.history.replaceState({}, document.title, "/");
+
+        navigate("/");
+
+        const response = await axios.get(`${import.meta.env.VITE_MAIN_SERVER_URL}/auth/current-user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response){
+          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("userId", response.data.id);
+        }
+        setIsLogin(false);
+      }
+    }
+
+    checkFeedbackRedirect();
+
+  }, [navigate])
+
   const rightContent = (
-    <button
+    isLogin && <button
       onClick={handleLogin}
       className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 hover:shadow focus:outline-none focus:ring-2 focus:ring-[#8FA6F8] focus:ring-offset-2"
     >

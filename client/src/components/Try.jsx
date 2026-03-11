@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "./Navbar";
+import { socket } from '../socket/socket.js'
 
 const initialMessages = [
   {
@@ -32,7 +33,7 @@ function maskApiKey(value) {
 }
 
 function Try() {
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
@@ -45,6 +46,22 @@ function Try() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isThinking]);
 
+  useEffect(() => {
+    const onResponse = (payload) => {
+      setMessages((c) => [
+        ...c,
+        { id: Date.now(), role: "assistant", text: payload.answer, time: "Now" },
+      ]);
+      setIsThinking(false);
+    };
+
+    socket.on("response", onResponse);
+
+    return () => {
+      socket.off("response", onResponse);
+    };
+  }, []);
+
   const addUserMessage = (text) => {
     const trimmed = text.trim();
     if (!trimmed || isThinking || showApiModal) return;
@@ -56,18 +73,6 @@ function Try() {
     setInput("");
     if (textareaRef.current) textareaRef.current.style.height = "44px";
     setIsThinking(true);
-    setTimeout(() => {
-      setMessages((c) => [
-        ...c,
-        {
-          id: nextId + 1,
-          role: "assistant",
-          text: assistantReply,
-          time: "Now",
-        },
-      ]);
-      setIsThinking(false);
-    }, 900);
   };
 
   const handleKeyDown = (e) => {
@@ -79,6 +84,10 @@ function Try() {
 
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
+    socket.emit("query", {
+      apiKey: apiKey,
+      query: e.target.value,
+    });
     e.target.style.height = "44px";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 140)}px`;
   };
@@ -138,11 +147,10 @@ function Try() {
                   className={`max-w-[78%] flex flex-col gap-1 ${msg.role === "user" ? "items-end" : "items-start"}`}
                 >
                   <div
-                    className={`rounded-2xl px-4 py-3 text-[15px] leading-7 ${
-                      msg.role === "user"
-                        ? "rounded-tr-sm bg-white border border-slate-200 text-slate-800 shadow-sm"
-                        : "rounded-tl-sm bg-linear-to-br from-[#8FA6F8]/12 to-[#D16BA5]/8 border border-[#8FA6F8]/15 text-slate-800"
-                    }`}
+                    className={`rounded-2xl px-4 py-3 text-[15px] leading-7 ${msg.role === "user"
+                      ? "rounded-tr-sm bg-white border border-slate-200 text-slate-800 shadow-sm"
+                      : "rounded-tl-sm bg-linear-to-br from-[#8FA6F8]/12 to-[#D16BA5]/8 border border-[#8FA6F8]/15 text-slate-800"
+                      }`}
                   >
                     {msg.text}
                   </div>

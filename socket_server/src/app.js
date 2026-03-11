@@ -10,7 +10,19 @@ export function createSocketServer(httpServer) {
   });
 
   io.on("connection", (socket) => {
+    const userId = socket.handshake.auth?.userId;
+
+    if (!userId) {
+        socket.disconnect(true);
+        return;
+    }
+    console.log(`New client connected: ${userId}`);
+    socket.join(userId);
+
+    socket.data.userId = userId;
+
     registerSocketEvents(socket);
+    
   });
 
   return io;

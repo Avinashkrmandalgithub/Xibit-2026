@@ -2,10 +2,16 @@ import dotenv from "dotenv";
 dotenv.config();
 import http from "http";
 import { createSocketServer } from "./src/app.js";
+import cors from "cors";
+import express from "express";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.SOCKET_PORT || 5001;
 
-const httpServer = http.createServer();
+const httpServer = http.createServer(app);
 createSocketServer(httpServer);
 
 httpServer.listen(PORT, () => {
